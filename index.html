@@ -6,173 +6,53 @@
     <title>QR Me - Generate QR Codes Instantly</title>
     
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
-            margin: 20px;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-        
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1em;
-        }
-        
-        .input-group {
-            margin-bottom: 30px;
-            text-align: left;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-        
-        input[type="text"], input[type="url"] {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
             box-sizing: border-box;
         }
         
-        input[type="text"]:focus, input[type="url"]:focus {
-            outline: none;
-            border-color: #667eea;
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
         
-        .size-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 20px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        .size-group label {
-            margin-bottom: 0;
-            white-space: nowrap;
-        }
-        
-        input[type="range"] {
-            flex: 1;
-            margin: 0 10px;
-        }
-        
-        .size-display {
-            font-weight: bold;
-            color: #667eea;
-            min-width: 60px;
-        }
-        
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        iframe {
+            width: 100vw;
+            height: 100vh;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            font-weight: 600;
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-        }
-        
-        button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .result {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 8px;
-            display: none;
-        }
-        
-        .result.success {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-        
-        .result.error {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-        
-        .qr-code {
-            margin: 20px 0;
-            display: inline-block;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .qr-code img {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        .download-btn {
-            background: #28a745;
-            margin-top: 15px;
-            text-decoration: none;
-            display: inline-block;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        
-        .download-btn:hover {
-            background: #218838;
+            margin: 0;
+            padding: 0;
+            display: block;
         }
         
         .loading {
-            display: none;
-            margin: 20px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            color: white;
         }
         
         .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin: 0 auto;
+            margin-bottom: 20px;
         }
         
         @keyframes spin {
@@ -180,278 +60,38 @@
             100% { transform: rotate(360deg); }
         }
         
-        .example-urls {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .example-urls a {
-            color: #667eea;
-            text-decoration: none;
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        
-        .example-urls a:hover {
-            text-decoration: underline;
-        }
-        
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 14px;
-            color: #666;
-        }
-        
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            text-decoration: underline;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 10px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-            
-            .size-group {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .size-group label {
-                margin-bottom: 5px;
-            }
+        .loading-text {
+            font-size: 18px;
+            font-weight: 300;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🔗 QR Me</h1>
-        <p class="subtitle">Generate QR codes for any URL instantly</p>
-        
-        <form id="qrForm">
-            <div class="input-group">
-                <label for="urlInput">Enter URL:</label>
-                <input type="url" 
-                       id="urlInput" 
-                       placeholder="https://example.com" 
-                       required
-                       autocomplete="url">
-                <div class="example-urls">
-                    Quick examples: 
-                    <a onclick="fillExample('https://google.com')">Google</a>
-                    <a onclick="fillExample('https://github.com')">GitHub</a>
-                    <a onclick="fillExample('https://stackoverflow.com')">Stack Overflow</a>
-                </div>
-            </div>
-            
-            <div class="input-group">
-                <div class="size-group">
-                    <label>QR Code Size:</label>
-                    <input type="range" 
-                           id="sizeSlider" 
-                           min="100" 
-                           max="500" 
-                           value="200" 
-                           step="50"
-                           oninput="updateSizeDisplay(this.value)">
-                    <span class="size-display" id="sizeDisplay">200px</span>
-                </div>
-            </div>
-            
-            <button type="submit">Generate QR Code</button>
-        </form>
-        
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Generating QR Code...</p>
-        </div>
-        
-        <div id="result" class="result"></div>
-        
-        <div class="footer">
-            <p>Powered by <a href="https://github.com/pedrogomesiv/qrme" target="_blank">QR Me</a> • Open Source QR Code Generator</p>
-        </div>
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading QR Generator...</div>
     </div>
+    
+    <iframe 
+        id="qrapp"
+        src="https://script.google.com/macros/s/AKfycbzTKHVpFRUI1sAJlzm9OFZJgLZcPsuydrJ-icU0FTWWpMlb7_VezG4trKCBktQJ4WGc/exec"
+        title="QR Code Generator"
+        onload="hideLoading()"
+        scrolling="no"
+        frameborder="0">
+    </iframe>
 
     <script>
-        // QR Code generation functions (calling Google Apps Script backend)
-        function fillExample(url) {
-            document.getElementById('urlInput').value = url;
-        }
-        
-        function updateSizeDisplay(value) {
-            document.getElementById('sizeDisplay').textContent = value + 'px';
-        }
-        
-        document.getElementById('qrForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const url = document.getElementById('urlInput').value.trim();
-            const size = parseInt(document.getElementById('sizeSlider').value);
-            
-            if (!url) {
-                showError('Please enter a URL');
-                return;
-            }
-            
-            // Add protocol if missing
-            let finalUrl = url;
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                finalUrl = 'https://' + url;
-                document.getElementById('urlInput').value = finalUrl;
-            }
-            
-            showLoading();
-            generateQRCode(finalUrl, size);
-        });
-        
-        function generateQRCode(url, size = 200) {
-            try {
-                if (!url) {
-                    throw new Error('URL is required');
-                }
-                
-                // Add protocol if missing
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                }
-                
-                // Ensure size is within bounds
-                size = Math.max(100, Math.min(500, size));
-                
-                // Use QR Server API - more reliable
-                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}`;
-                
-                // Backup Google Charts URL
-                const backupUrl = `https://chart.googleapis.com/chart?cht=qr&chs=${size}x${size}&chl=${encodeURIComponent(url)}`;
-                
-                const response = {
-                    success: true,
-                    qrCodeUrl: qrCodeUrl,
-                    backupUrl: backupUrl,
-                    originalUrl: url,
-                    size: size
-                };
-                
-                onSuccess(response);
-                
-            } catch (error) {
-                onError(error);
-            }
-        }
-        
-        function showLoading() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('result').style.display = 'none';
-            document.querySelector('button[type="submit"]').disabled = true;
-        }
-        
         function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-            document.querySelector('button[type="submit"]').disabled = false;
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 300);
         }
         
-        function onSuccess(response) {
-            hideLoading();
-            
-            if (response.success) {
-                showSuccess(response);
-            } else {
-                showError(response.error || 'Failed to generate QR code');
-            }
-        }
-        
-        function onError(error) {
-            hideLoading();
-            showError('Error: ' + (error.message || 'Unknown error occurred'));
-        }
-        
-        function showSuccess(response) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.className = 'result success';
-            
-            const qrCodeUrl = response.qrCodeUrl;
-            const backupUrl = response.backupUrl;
-            const originalUrl = response.originalUrl;
-            
-            resultDiv.innerHTML = `
-                <h3>✅ QR Code Generated Successfully!</h3>
-                <p><strong>URL:</strong> ${originalUrl}</p>
-                <div class="qr-code">
-                    <img src="${qrCodeUrl}" 
-                         alt="QR Code for ${originalUrl}" 
-                         id="qrImage"
-                         onload="console.log('QR image loaded successfully')"
-                         onerror="handleImageError(this, '${backupUrl}')">
-                </div>
-                <a href="${qrCodeUrl}" 
-                   download="qrcode.png" 
-                   class="download-btn"
-                   id="downloadBtn">
-                    💾 Download QR Code
-                </a>
-                <br><br>
-                <small>Right-click the image above to save it directly</small>
-            `;
-            resultDiv.style.display = 'block';
-        }
-        
-        function handleImageError(img, backupUrl) {
-            console.log('Primary QR service failed, trying backup URL:', backupUrl);
-            
-            // Try the backup URL
-            img.src = backupUrl;
-            img.onload = function() {
-                console.log('Backup QR image loaded successfully');
-                // Update download button to use backup URL
-                const downloadBtn = document.getElementById('downloadBtn');
-                if (downloadBtn) {
-                    downloadBtn.href = backupUrl;
-                }
-            };
-            
-            img.onerror = function() {
-                console.error('Both QR services failed');
-                img.style.display = 'none';
-                img.parentNode.innerHTML = `
-                    <div style="padding: 20px; border: 2px dashed #ccc; text-align: center;">
-                        <p>❌ QR Code image failed to load from both services</p>
-                        <p><small>Try these URLs directly:</small></p>
-                        <div style="margin: 10px 0; font-size: 12px;">
-                            <p><strong>Primary:</strong> <a href="${qrCodeUrl}" target="_blank" style="word-break: break-all;">${qrCodeUrl}</a></p>
-                            <p><strong>Backup:</strong> <a href="${backupUrl}" target="_blank" style="word-break: break-all;">${backupUrl}</a></p>
-                        </div>
-                    </div>
-                `;
-            };
-        }
-        
-        function showError(message) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.className = 'result error';
-            resultDiv.innerHTML = `
-                <h3>❌ Error</h3>
-                <p>${message}</p>
-            `;
-            resultDiv.style.display = 'block';
-        }
-        
-        // Auto-focus on URL input when page loads
-        window.onload = function() {
-            document.getElementById('urlInput').focus();
-        };
+        // Fallback to hide loading after 10 seconds
+        setTimeout(hideLoading, 10000);
     </script>
 </body>
 </html>

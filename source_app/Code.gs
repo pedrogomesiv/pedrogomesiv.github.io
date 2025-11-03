@@ -4,7 +4,7 @@
  */
 
 function doGet() {
-  return HtmlService.createTemplateFromFile('index')
+  return HtmlService.createTemplateFromFile('app')
     .evaluate()
     .setTitle('QR Code Generator')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
